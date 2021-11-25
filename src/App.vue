@@ -122,7 +122,36 @@ body{
   border-radius: 50%;
   object-fit: cover;
 }
-/* .box img:hover{
-  transform: scale(1.2);
+/* .music-navigation{
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 } */
+.music-description,
+.music-navigation,
+.music-image{
+  width: 33.33%;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.music-description p,
+.music-image p{
+  color: #fff;
+  font-size: 1.7rem;
+  width: 80%;
+  overflow: hidden;
+  text-align: center;
+}
+.music-navigation button{
+  border: 0.1rem solid rgba(0,0,0,0.7);
+  height: 3.8rem;
+  border-radius: 50%;
+  margin: 0 1.3rem;
+  width: 3.8rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
 </style>
