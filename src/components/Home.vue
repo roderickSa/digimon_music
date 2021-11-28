@@ -1,57 +1,33 @@
 <template>
-  <div class="header" id="header">
-    <div class="box-container music-container">
-      <div class="music-description">
-        <p>{{ current_digimon.music }}</p>
-      </div>
-      <div class="music-navigation">
-        <audio 
-          src="music/aim_sun_goes_down.mp3" 
-          ref="audio"
-          id="audio"></audio>
-        <button id="prev" class="action-btn">
-          <i class="fas fa-backward"></i>
-        </button>
-        <button 
-          v-if="!is_paused"
-          ref="play" 
-          @click="play_music"
-          id="play" 
-          class="action-btn">
-            <i class="fas fa-play"></i>
-        </button>
-        <button 
-          v-else
-          ref="pause" 
-          @click="pause_music"
-          id="pause" 
-          class="action-btn">
-            <i class="fas fa-pause"></i>
-        </button>
-        <button id="next" class="action-btn">
-          <i class="fas fa-forward"></i>
-        </button>
-      </div>
-      <div class="music-image">
-        <p>progreso</p>
-      </div>
-    </div>
+  <div>
+    <Header
+      :is_paused="is_paused"
+      :current_digimon="current_digimon"
+      :play_music="play_music"
+      :pause_music="pause_music"
+      :ended_music="ended_music"
+      :timeupdate_music="timeupdate_music"
+      :set_progress="set_progress"
+      ref="header"/>
     <div class="box-container">
-      <div class="carrusel-digimon">
-        <div v-for="digimon in digimons" :key="digimon.id" class="box" @click="change_music(digimon)" >
-          <img :src="digimon.img" :alt="digimon.img">
-          <div class="box-description">
-            <p>{{digimon.music}}</p>
-          </div>
-        </div>
-      </div>
+      <Digimon 
+        :digimons="digimons" 
+        :change_music="change_music" />
     </div>
   </div>
 </template>
 
 <script>
+
+import Digimon from '@/components/Digimon';
+import Header from '@/components/Header';
+
 export default {
   name: 'Home',
+  components: {
+    Digimon,
+    Header
+  },
   data() {
     return {
       is_paused: false,
@@ -78,15 +54,18 @@ export default {
     async play_music() {
       // console.log(this.$refs.audio.play());
       // document.getElementById("audio").play();
-      this.$refs.audio.play()
+      // this.$refs.audio.play()
+      this.$refs.header.$refs.audio.play()
       this.is_paused = true
     },
     async pause_music() {
-      this.$refs.audio.pause()
+      // this.$refs.audio.pause()
+      this.$refs.header.$refs.audio.pause()
       this.is_paused = false
     },
     change_music( { id, name, music } ) {
-      const current_music = this.$refs.audio.src.substring(this.$refs.audio.src.lastIndexOf('/') + 1);
+      const audio = this.$refs.header.$refs.audio
+      const current_music = audio.src.substring(audio.src.lastIndexOf('/') + 1);
       //si la musica esta pausada
       if( this.is_paused == false ) {
         this.current_digimon = {
@@ -95,7 +74,7 @@ export default {
         // si es otra musica reiniciamos la musica
         if( music != current_music ) {
           const new_music = `music/${music}`
-          this.$refs.audio.src = new_music
+          audio.src = new_music
         }
         // si es la misma musica solo retomamos
         this.play_music()
@@ -105,7 +84,7 @@ export default {
       //si es otra musica
       if( music != current_music ) {
         const new_music = `music/${music}`
-        this.$refs.audio.src = new_music
+        audio.src = new_music
         this.play_music()
         this.current_digimon = {
           id, name, music
@@ -113,8 +92,36 @@ export default {
       }
       //si la musica NO esta pausada
       //si es la misma musica => no hacemos nada
+    },
+    ended_music() {
+      const inx = this.digimons.findIndex( item => ( item.id === this.current_digimon.id ) )
+      if( inx !== -1 ) {
+        const new_digimon = this.tamanio_digimon - 1 !== inx? this.digimons[inx + 1]: this.digimons[0]
+        return this.change_music(new_digimon)
+      }
+    },
+    timeupdate_music() {
+      const audio = this.$refs.header.$refs.audio
+      const duration = audio.duration
+      const currentTime = audio.currentTime
+      const progressPercent = ( currentTime / duration ) * 100
+      // console.log(progressPercent);
+      document.getElementById("progress").style.width = `${progressPercent}%`
+    },
+    set_progress(e) {
+      const audio = this.$refs.header.$refs.audio
+      const content_progress = this.$refs.header.$refs.content_progress
+      const duration = audio.duration
+      const width = content_progress.clientWidth
+      const new_posX = e.offsetX
+      audio.currentTime = ( new_posX / width ) * duration
     }
   },
+  computed: {
+    tamanio_digimon() {
+      return this.digimons.length
+    }
+  }
 }
 </script>
 

@@ -18,7 +18,8 @@ export default {
 
 :root{
     --red: #ff3838;
-    --orange: #FF542B;;
+    --orange: #FF542B;
+    --yellow: rgb(255, 235, 59);
 }
 *{
     font-family: 'Roboto', sans-serif;
@@ -128,7 +129,7 @@ body{
   justify-content: center;
   align-items: center;
 } */
-.music-description,
+.music-container,
 .music-navigation,
 .music-image{
   width: 33.33%;
@@ -137,13 +138,45 @@ body{
   justify-content: center;
   align-items: center;
 }
-.music-description p,
-.music-image p{
+.music-description{
+  height: 5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.music-description p{
   color: #fff;
   font-size: 1.7rem;
   width: 80%;
   overflow: hidden;
   text-align: center;
+  animation: slider 3s linear infinite;
+  padding-right: 200%;
+  /*ayuda a para simular que hay 2 elementos uno detras de otro(al apareceer por el lado inicial aparece de golpe, bueno...)*/
+}
+@keyframes slider{
+  0% {
+        transform: translate(0, 0);
+  }
+  100% {
+      transform: translate(100%, 0);
+  }
+}
+.music-image .content-progress{
+  background: #fff;
+  height: 0.7rem;
+  width: 80%;
+  border-radius: 3.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+.music-image .content-progress .progress{
+  background: var(--yellow);
+  height: 100%;
+  border-radius: 3.5rem;
+  width: 0;
 }
 .music-navigation button{
   border: 0.1rem solid rgba(0,0,0,0.7);
