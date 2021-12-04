@@ -4,7 +4,7 @@
       v-for="digimon in digimons" 
       :key="digimon.id" 
       :digimon="digimon"
-      class="box" 
+      :current_digimon="current_digimon"
       @click="my_change_music(digimon)" />
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
   components: {
       DigimonItem
   },
-  props:    ['digimons', 'change_music'],
+  props:    ['digimons', 'change_music', 'current_digimon'],
   data() {
     return {
     }

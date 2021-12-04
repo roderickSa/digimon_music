@@ -118,6 +118,9 @@ body{
   overflow: hidden;
   cursor: pointer;
 }
+.box.selected_digimon{
+  border: 0.7rem solid #ffeb3b;
+}
 .box img{
   height: 100%;
   border-radius: 50%;

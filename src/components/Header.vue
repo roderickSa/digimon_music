@@ -12,7 +12,11 @@
                 id="audio"
                 v-on:ended="my_ended_music"
                 v-on:timeupdate="my_timeupdate_music"></audio>
-            <button id="prev" class="action-btn">
+            <button 
+                id="prev" 
+                class="action-btn"
+                @click="my_previ_music"
+                >
                 <i class="fas fa-backward"></i>
             </button>
             <button 
@@ -31,7 +35,11 @@
                 class="action-btn">
                 <i class="fas fa-pause"></i>
             </button>
-            <button id="next" class="action-btn">
+            <button 
+                id="next" 
+                class="action-btn"
+                @click="my_next_music"
+                >
             <i class="fas fa-forward"></i>
             </button>
         </div>
@@ -52,23 +60,39 @@
 <script>
 export default {
   name: 'Header',
-  props:    ['is_paused', 'current_digimon', 'play_music', 'pause_music', 'ended_music', 'timeupdate_music', 'set_progress'],
+  props:    [
+      'is_paused',
+      'current_digimon',
+      'play_music',
+      'pause_music',
+      'next_music',
+      'previ_music',
+      'ended_music',
+      'timeupdate_music',
+      'set_progress'
+      ],
   data() {
     return {
     }
   },
   methods: {
-      my_play_music(digimon) {
-          this.play_music(digimon);
+      async my_play_music(digimon) {
+          await this.play_music(digimon);
       },
-      my_ended_music(){
-          this.ended_music()
+      async my_previ_music() {
+          await this.previ_music()
       },
-      my_timeupdate_music() {
-          this.timeupdate_music()
+      async my_next_music() {
+          await this.next_music()
       },
-      my_set_progress(e) {
-          this.set_progress(e)
+      async my_ended_music(){
+          await this.ended_music()
+      },
+      async my_timeupdate_music() {
+          await this.timeupdate_music()
+      },
+      async my_set_progress(e) {
+          await this.set_progress(e)
       }
   }
 }

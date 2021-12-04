@@ -5,13 +5,16 @@
       :current_digimon="current_digimon"
       :play_music="play_music"
       :pause_music="pause_music"
+      :next_music="next_music"
+      :previ_music="previ_music"
       :ended_music="ended_music"
       :timeupdate_music="timeupdate_music"
       :set_progress="set_progress"
       ref="header"/>
     <div class="box-container">
       <Digimon 
-        :digimons="digimons" 
+        :digimons="digimons"
+        :current_digimon="current_digimon"
         :change_music="change_music" />
     </div>
   </div>
@@ -55,15 +58,15 @@ export default {
       // console.log(this.$refs.audio.play());
       // document.getElementById("audio").play();
       // this.$refs.audio.play()
-      this.$refs.header.$refs.audio.play()
+      await this.$refs.header.$refs.audio.play()//aca importante el await por que el play es una promesa
       this.is_paused = true
     },
     async pause_music() {
       // this.$refs.audio.pause()
-      this.$refs.header.$refs.audio.pause()
+      await this.$refs.header.$refs.audio.pause()
       this.is_paused = false
     },
-    change_music( { id, name, music } ) {
+    async change_music( { id, name, music } ) {
       const audio = this.$refs.header.$refs.audio
       const current_music = audio.src.substring(audio.src.lastIndexOf('/') + 1);
       //si la musica esta pausada
@@ -77,7 +80,7 @@ export default {
           audio.src = new_music
         }
         // si es la misma musica solo retomamos
-        this.play_music()
+        await this.play_music()
         return
       }
       //si la musica NO esta pausada
@@ -85,7 +88,7 @@ export default {
       if( music != current_music ) {
         const new_music = `music/${music}`
         audio.src = new_music
-        this.play_music()
+        await this.play_music()
         this.current_digimon = {
           id, name, music
         }
@@ -93,14 +96,30 @@ export default {
       //si la musica NO esta pausada
       //si es la misma musica => no hacemos nada
     },
-    ended_music() {
+    async previ_music() {
+      const inx = this.digimons.findIndex( item => ( item.id === this.current_digimon.id ) )
+      if( inx !== -1 ) {
+        const new_digimon = inx !== 0? this.digimons[inx - 1]: this.digimons[this.tamanio_digimon - 1]
+        await this.change_music(new_digimon)
+        return 
+      }  
+    },
+    async next_music() {
       const inx = this.digimons.findIndex( item => ( item.id === this.current_digimon.id ) )
       if( inx !== -1 ) {
         const new_digimon = this.tamanio_digimon - 1 !== inx? this.digimons[inx + 1]: this.digimons[0]
-        return this.change_music(new_digimon)
+        return await this.change_music(new_digimon)
       }
     },
-    timeupdate_music() {
+    async ended_music() {
+      await this.next_music()
+      // const inx = this.digimons.findIndex( item => ( item.id === this.current_digimon.id ) )
+      // if( inx !== -1 ) {
+      //   const new_digimon = this.tamanio_digimon - 1 !== inx? this.digimons[inx + 1]: this.digimons[0]
+      //   return this.change_music(new_digimon)
+      // }
+    },
+    async timeupdate_music() {
       const audio = this.$refs.header.$refs.audio
       const duration = audio.duration
       const currentTime = audio.currentTime
@@ -108,7 +127,7 @@ export default {
       // console.log(progressPercent);
       document.getElementById("progress").style.width = `${progressPercent}%`
     },
-    set_progress(e) {
+    async set_progress(e) {
       const audio = this.$refs.header.$refs.audio
       const content_progress = this.$refs.header.$refs.content_progress
       const duration = audio.duration
