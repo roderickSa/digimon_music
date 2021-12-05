@@ -20,6 +20,7 @@ export default {
     --red: #ff3838;
     --orange: #FF542B;
     --yellow: rgb(255, 235, 59);
+    --violet: #ee82ee;
 }
 *{
     font-family: 'Roboto', sans-serif;
@@ -44,20 +45,20 @@ html::-webkit-scrollbar{
 html::-webkit-scrollbar-track{
     background: transparent;
 }
-/* html::-webkit-scrollbar-thumb{
-    background: #2196f3;
-    border-radius: 5rem;
-} */
-/* html::-webkit-scrollbar-thumb{
+html::-webkit-scrollbar-thumb{
     background: #2196f3;
     border-radius: 5rem;
 }
-.box-container::-webkit-scrollbar {
+/* html::-webkit-scrollbar-thumb{
+    background: #2196f3;
+    border-radius: 5rem;
+}*/
+/*.box-container::-webkit-scrollbar {
   background: #2196f3;
   color: #fff;
   width: .8rem;
   border-radius: 5rem;
-} */
+}*/
 *::selection{
     background-color: var(--red);
     color: #fff;
@@ -69,7 +70,7 @@ html{
     scroll-padding-top: 6rem;
 }
 body{
-    background: #f7f7f7;
+    background: var(--yellow);
 }
 .box-container{
   display: flex;
@@ -110,8 +111,8 @@ body{
   gap: 1.5rem;
 }
 .box{
-  flex: 1 1 15rem;
-  height: 15rem;
+  /* flex: 1 1 15rem; */
+  height: 12rem;
   position: relative;
   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 30%);
   border-radius: 50%;
@@ -155,7 +156,7 @@ body{
   width: 80%;
   overflow: hidden;
   text-align: center;
-  animation: slider 3s linear infinite;
+  animation: slider 4s linear infinite;
   padding-right: 200%;
   /*ayuda a para simular que hay 2 elementos uno detras de otro(al apareceer por el lado inicial aparece de golpe, bueno...)*/
 }
@@ -189,5 +190,45 @@ body{
   width: 3.8rem;
   cursor: pointer;
   font-size: 1.5rem;
+}
+.digimon-crud{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  background: var(--violet);
+}
+.digimon-crud .box-image-digimon-selected{
+  flex: 1 1 45rem;
+  display: flex;
+  align-items: center;
+}
+.digimon-crud .box-image-digimon-selected img{
+  margin: 0 auto;
+  object-fit: cover;
+}
+.digimon-crud .form-digimon-selected{
+  flex: 1 1 45rem;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+.digimon-crud .form-digimon-selected h3{
+  text-transform: uppercase;
+  font-size: 2.5rem;
+  color: #fff;
+}
+.inputBox{
+  height: 5rem;
+  background: var(--orange);
+  border: 0.1rem solid rgba(0,0,0,0.3);
+  margin-top: 1.5rem;
+}
+.inputBox select{
+  width: 100%;
+  height: 100%;
+  background: none;
+  padding-left: 1rem;
+  font-size: 1.8rem;
 }
 </style>

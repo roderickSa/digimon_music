@@ -24,6 +24,7 @@ export default {
       //recorrea todos los elementos observados
       for (const m of mutations) {
         const newValue = m.target.getAttribute(m.attributeName);
+        //this.$nextTick espera a que el dom actualice para recien actuar
         this.$nextTick(() => {
           this.onClassChange(newValue, m.oldValue);
         });
