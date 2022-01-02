@@ -203,6 +203,7 @@ body{
   flex: 1 1 45rem;
   display: flex;
   align-items: center;
+  margin: 2rem 0;
 }
 .digimon-crud .box-image-digimon-selected img{
   margin: 0 auto;
@@ -230,5 +231,20 @@ body{
   background: none;
   padding-left: 1rem;
   font-size: 1.8rem;
+}
+@media only screen and (max-width: 576px) {
+  .header{
+    flex-direction: column;
+  }
+  .music-container, .music-navigation, .music-image{
+    width: 100%;
+  }
+  .music-navigation button {
+    height: 5rem;
+    width: 5rem;
+  }
+  .music-image .content-progress{
+    height: 1rem;
+  }
 }
 </style>

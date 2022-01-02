@@ -12,7 +12,7 @@
       :set_progress="set_progress"
       ref="header"/>
     <div class="box-container">
-      <Digimon 
+      <Digimon
         :digimons="digimons"
         :current_digimon="current_digimon"
         :change_music="change_music" />
@@ -53,22 +53,36 @@ export default {
     try {
       //digimon
       const response = await fetch(`http://127.0.0.1:8001/api/digimons`, {
-          'method': 'POST'      
+        'method': 'POST'
       });
       const data = await response.json();
       this.digimons = data;
-      this.change_music(data[0])
+      // this.change_music(data[0]) esto me da problemas al querer reproducir la musica automaticamente
+      const {id, name, img, music, id_music} = data[0]
+      await this.setCurrentDigimon(id, name, img, music, id_music)
       //music
       const response_music = await fetch(`http://127.0.0.1:8001/api/musics`, {
-          'method': 'POST'      
+        'method': 'POST'
       });
       const data_music = await response_music.json();
       this.musics = data_music
+      //KeyboardEvent space
+      await document.addEventListener("keydown", this.spaceEvent)
     } catch (error) {
       console.log(error);
     }
   },
   methods: {
+    async spaceEvent(event) {
+      //event space
+      if(event.keyCode === 32) {
+        if(this.is_paused === true) {
+          await this.pause_music()
+          return
+        }
+        await this.play_music()
+      }
+    },
     async play_music() {
       // console.log(this.$refs.audio.play());
       // document.getElementById("audio").play();
@@ -86,9 +100,7 @@ export default {
       const current_music = audio.src.substring(audio.src.lastIndexOf('/') + 1);
       //si la musica esta pausada
       if( this.is_paused == false ) {
-        this.current_digimon = {
-          id, name, img, music, id_music
-        }
+        await this.setCurrentDigimon(id, name, img, music, id_music)
         // si es otra musica reiniciamos la musica
         if( music != current_music ) {
           const new_music = `music/${music}`
@@ -104,20 +116,23 @@ export default {
         const new_music = `music/${music}`
         audio.src = new_music
         await this.play_music()
-        this.current_digimon = {
-          id, name, img, music, id_music
-        }
+        await this.setCurrentDigimon(id, name, img, music, id_music)
       }
       //si la musica NO esta pausada
       //si es la misma musica => no hacemos nada
+    },
+    async setCurrentDigimon(id, name, img, music, id_music) {
+      this.current_digimon = {
+        id, name, img, music, id_music
+      }
     },
     async previ_music() {
       const inx = this.digimons.findIndex( item => ( item.id === this.current_digimon.id ) )
       if( inx !== -1 ) {
         const new_digimon = inx !== 0? this.digimons[inx - 1]: this.digimons[this.tamanio_digimon - 1]
         await this.change_music(new_digimon)
-        return 
-      }  
+        return
+      }
     },
     async next_music() {
       const inx = this.digimons.findIndex( item => ( item.id === this.current_digimon.id ) )

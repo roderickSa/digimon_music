@@ -6,37 +6,38 @@
             </div>
         </div>
         <div class="music-navigation">
-            <audio 
-                src="music/aim_sun_goes_down.mp3" 
+            <audio
+                src="music/aim_sun_goes_down.mp3"
                 ref="audio"
                 id="audio"
                 v-on:ended="my_ended_music"
-                v-on:timeupdate="my_timeupdate_music"></audio>
-            <button 
-                id="prev" 
+                v-on:timeupdate="my_timeupdate_music"
+                ></audio>
+            <button
+                id="prev"
                 class="action-btn"
                 @click="my_previ_music"
                 >
                 <i class="fas fa-backward"></i>
             </button>
-            <button 
+            <button
                 v-if="!is_paused"
-                ref="play" 
+                ref="play"
                 @click="play_music"
-                id="play" 
+                id="play"
                 class="action-btn">
                 <i class="fas fa-play"></i>
             </button>
-            <button 
+            <button
                 v-else
-                ref="pause" 
+                ref="pause"
                 @click="pause_music"
-                id="pause" 
+                id="pause"
                 class="action-btn">
                 <i class="fas fa-pause"></i>
             </button>
-            <button 
-                id="next" 
+            <button
+                id="next"
                 class="action-btn"
                 @click="my_next_music"
                 >
@@ -44,13 +45,13 @@
             </button>
         </div>
         <div class="music-image">
-            <div 
+            <div
                 class="content-progress"
                 ref="content_progress"
                 @click="my_set_progress($event)"
                 >
-                <div 
-                    class="progress" 
+                <div
+                    class="progress"
                     id="progress"/>
             </div>
         </div>
